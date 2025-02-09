@@ -9,18 +9,6 @@ export class JawsCdkEvent19Stack extends cdk.Stack {
     super(scope, id, props);
 
     // The code that defines your stack goes here
-
-    // example resource
-    // const queue = new sqs.Queue(this, 'JawsCdkEvent19Queue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
-    
-    // const myFunction = new lambda.Function(this, "HelloWorldFunction", {
-    //   runtime: lambda.Runtime.PROVIDED_AL2023, // Provide any supported Node.js runtime
-    //   layers: [lambda.LayerVersion.fromLayerVersionArn(this, "jaws-cdk-event-19-layer","arn:aws:lambda:us-east-1:659547760577:layer:runtime-node23:7")],
-    //   handler: "index.handler",
-    //   code:lambda.Code.fromAsset(path.join(__dirname, '../lambda')),
-    // });
     
     const node23RuntimeLayer = new lambda.LayerVersion(this, 'Node23SampleLayer', {
       code: lambda.Code.fromAsset(path.join(__dirname, '../runtime-node23')),

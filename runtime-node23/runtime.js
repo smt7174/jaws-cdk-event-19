@@ -1,9 +1,8 @@
+// 参考：https://github.com/lambci/node-custom-lambda/blob/master/v12.x/bootstrap.js
 const http = require('http')
 
 const RUNTIME_PATH = '/2018-06-01/runtime'
-
 const CALLBACK_USED = Symbol('CALLBACK_USED')
-
 const EXTENSION_TYPESCRIPT = '.ts'
 
 const {

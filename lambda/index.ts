@@ -1,3 +1,4 @@
+// typeを付けないとうまく動かない
 import type { LambdaFunctionURLEvent, LambdaFunctionURLResult } from 'aws-lambda/trigger/lambda-function-url'
 
 const handler = async function (event: LambdaFunctionURLEvent) {
