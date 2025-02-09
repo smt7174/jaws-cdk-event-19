@@ -1,0 +1,1 @@
+export const DEPLOY_REGION = 'us-east-1';
