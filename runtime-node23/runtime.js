@@ -4,6 +4,8 @@ const RUNTIME_PATH = '/2018-06-01/runtime'
 
 const CALLBACK_USED = Symbol('CALLBACK_USED')
 
+const EXTENSION_TYPESCRIPT = '.ts'
+
 const {
   AWS_LAMBDA_FUNCTION_NAME,
   AWS_LAMBDA_FUNCTION_VERSION,
@@ -145,7 +147,9 @@ function getHandler() {
   const [modulePath, handlerName] = appParts
 
   // Let any errors here be thrown as-is to aid debugging
-  const app = require(LAMBDA_TASK_ROOT + '/' + modulePath)
+  // デフォルトは*.jsファイルを読み込むので、'ts'拡張子を設定しないと
+  // Runtime.Unknownエラーになる。
+  const app = require(LAMBDA_TASK_ROOT + '/' + modulePath + EXTENSION_TYPESCRIPT)
 
   const userHandler = app[handlerName]
 

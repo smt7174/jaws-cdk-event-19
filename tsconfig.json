@@ -24,6 +24,10 @@
       "./node_modules/@types"
     ],
     "esModuleInterop": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    // "rewriteRelativeImportExtensions": true,
+    // "verbatimModuleSyntax": true
   },
   "exclude": [
     "node_modules",

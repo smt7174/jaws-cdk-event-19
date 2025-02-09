@@ -33,7 +33,8 @@ export class JawsCdkEvent19Stack extends cdk.Stack {
       runtime: lambda.Runtime.PROVIDED_AL2023, // Provide any supported Node.js runtime
       layers: [node23RuntimeLayer],
       handler: "index.handler",
-      code:lambda.Code.fromAsset(path.join(__dirname, '../lambda')),
+      code: lambda.Code.fromAsset(path.join(__dirname, '../lambda')),
+      timeout: cdk.Duration.seconds(30),
     });
     
     const sampleFunctionUrl = sampleFunction.addFunctionUrl({
