@@ -20,10 +20,12 @@ export class JawsCdkEvent19Stack extends cdk.Stack {
     });
     
     const nodeModulesLayer = new lambda.LayerVersion(this, 'NodeModulesLayer', {
-      code: lambda.Code.fromAsset(path.join(__dirname, '../nodejs')),
+      code: lambda.Code.fromAsset(path.join(__dirname, '../node-modules-layer')),
       layerVersionName: 'node-modules',
       removalPolicy: cdk.RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE,
     });
+    
+    // const nodeModulesLayerManual = lambda.LayerVersion.fromLayerVersionArn(this, 'NodeModulesLayerManual', "arn:aws:lambda:us-east-1:659547760577:layer:node-modules-manual:1");
     
     const sampleFunction = new lambda.Function(this, "Node23SampleFunction", {
       functionName: 'Node23SampleFunction',
@@ -41,9 +43,27 @@ export class JawsCdkEvent19Stack extends cdk.Stack {
     const sampleFunctionUrl = sampleFunction.addFunctionUrl({
       authType: lambda.FunctionUrlAuthType.NONE,
     });
+    
+    const sampleFunctionJs = new lambda.Function(this, "Node23SampleFunctionJs", {
+      functionName: 'Node23SampleFunctionJs',
+      runtime: lambda.Runtime.PROVIDED_AL2023, // Provide any supported Node.js runtime
+      layers: [node23RuntimeLayer, nodeModulesLayer],
+      handler: "index.handler",
+      code: lambda.Code.fromAsset(path.join(__dirname, '../lambda_js')),
+      timeout: cdk.Duration.seconds(30),
+      environment: {
+        TABLE_NAME: TOD_DYNAMODB_TABLE_NAME,
+        TABLE_REGION: TOD_DYNAMODB_TABLE_REGION,
+      }
+    });
+    
+    sampleFunctionJs.addFunctionUrl({
+      authType: lambda.FunctionUrlAuthType.NONE,
+    });
 
     const todDynamoDbTable = TableV2.fromTableArn(this, 'todDynamoDbTable', TOD_DYNAMODB_TABLE_ARN);
     todDynamoDbTable.grantReadData(sampleFunction);
+    todDynamoDbTable.grantReadData(sampleFunctionJs);
     
     // Define a CloudFormation output for your URL
     new cdk.CfnOutput(this, "sampleFunctionUrlOutput", {

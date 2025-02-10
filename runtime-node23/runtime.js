@@ -14,6 +14,7 @@ const {
   LAMBDA_TASK_ROOT,
   _HANDLER,
   AWS_LAMBDA_RUNTIME_API,
+  PATH
 } = process.env
 
 const [HOST, PORT] = AWS_LAMBDA_RUNTIME_API.split(':')
@@ -22,6 +23,7 @@ start()
 
 async function start() {
   let handler
+  console.log(`runtime.js PATH env is ${PATH}`)
   try {
     handler = getHandler()
   } catch (e) {
@@ -149,6 +151,7 @@ function getHandler() {
   // デフォルトは*.jsファイルを読み込むので、'ts'拡張子を設定しないと
   // Runtime.Unknownエラーになる。
   const app = require(LAMBDA_TASK_ROOT + '/' + modulePath + EXTENSION_TYPESCRIPT)
+  // const app = require(LAMBDA_TASK_ROOT + '/' + modulePath)
 
   const userHandler = app[handlerName]
 
