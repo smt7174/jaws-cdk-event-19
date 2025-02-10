@@ -1,10 +1,10 @@
 #!/bin/sh
-# echo `pwd`
+echo `pwd`
 
 cd $LAMBDA_TASK_ROOT
-# echo `pwd`
-# echo `ls -al`
-# echo `ls -al /opt/`
+echo `pwd`
+echo `ls -al`
+echo `ls -al /opt/`
 
 /opt/node-v23.6.0-linux-x64/bin/node /opt/runtime.js 
 
