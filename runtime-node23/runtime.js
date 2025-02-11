@@ -14,7 +14,8 @@ const {
   LAMBDA_TASK_ROOT,
   _HANDLER,
   AWS_LAMBDA_RUNTIME_API,
-  PATH
+  PATH,
+  NODE_PATH
 } = process.env
 
 const [HOST, PORT] = AWS_LAMBDA_RUNTIME_API.split(':')
@@ -24,6 +25,7 @@ start()
 async function start() {
   let handler
   console.log(`runtime.js PATH env is ${PATH}`)
+  console.log(`runtime.js NODE_PATH env is ${NODE_PATH}`)
   try {
     handler = getHandler()
   } catch (e) {

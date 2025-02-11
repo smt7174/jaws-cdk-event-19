@@ -23,6 +23,10 @@ export class JawsCdkEvent19Stack extends cdk.Stack {
       code: lambda.Code.fromAsset(path.join(__dirname, '../node-modules-layer')),
       layerVersionName: 'node-modules',
       removalPolicy: cdk.RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE,
+      compatibleRuntimes: [
+        lambda.Runtime.PROVIDED_AL2023,
+        lambda.Runtime.NODEJS_22_X
+      ],
     });
     
     // const nodeModulesLayerManual = lambda.LayerVersion.fromLayerVersionArn(this, 'NodeModulesLayerManual', "arn:aws:lambda:us-east-1:659547760577:layer:node-modules-manual:1");
