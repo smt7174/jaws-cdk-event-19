@@ -13,12 +13,17 @@ echo "LD_LIBRARY_PATH is $LD_LIBRARY_PATH"
 
 echo `pwd`
 
-# cd $LAMBDA_TASK_ROOT
+
+
+cd $LAMBDA_TASK_ROOT
 # echo `pwd`
 # echo `ls -al`
 # echo `ls -al /opt/`
 # echo `ls -al /opt/nodejs/`
 # echo `ls -al /opt/nodejs/node_modules/`
+
+cp -r /opt/nodejs $LAMBDA_RUNTIME_DIR/lib
+echo `ls -al $LAMBDA_RUNTIME_DIR/lib`
 
 /opt/node-v23.6.0-linux-x64/bin/node /opt/runtime.js 
 
