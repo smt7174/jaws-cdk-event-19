@@ -2,10 +2,10 @@ import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { TableV2, AttributeType } from "aws-cdk-lib/aws-dynamodb";
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import path from 'path';
 
-import { TOD_DYNAMODB_TABLE_ARN, TOD_DYNAMODB_TABLE_NAME, TOD_DYNAMODB_TABLE_REGION } from '../parameters';
+import { S3_BUCKET_NAME, S3_KEY_NAME, DEPLOY_REGION } from '../parameters';
 
 export class JawsCdkEvent19Stack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -39,8 +39,9 @@ export class JawsCdkEvent19Stack extends cdk.Stack {
       code: lambda.Code.fromAsset(path.join(__dirname, '../lambda')),
       timeout: cdk.Duration.seconds(30),
       environment: {
-        TABLE_NAME: TOD_DYNAMODB_TABLE_NAME,
-        TABLE_REGION: TOD_DYNAMODB_TABLE_REGION,
+        S3_KEY_NAME,
+        S3_BUCKET_NAME,
+        DEPLOY_REGION,
       }
     });
     
@@ -48,26 +49,30 @@ export class JawsCdkEvent19Stack extends cdk.Stack {
       authType: lambda.FunctionUrlAuthType.NONE,
     });
     
-    const sampleFunctionJs = new lambda.Function(this, "Node23SampleFunctionJs", {
-      functionName: 'Node23SampleFunctionJs',
-      runtime: lambda.Runtime.PROVIDED_AL2023, // Provide any supported Node.js runtime
-      layers: [node23RuntimeLayer, nodeModulesLayer],
-      handler: "index.handler",
-      code: lambda.Code.fromAsset(path.join(__dirname, '../lambda_js')),
-      timeout: cdk.Duration.seconds(30),
-      environment: {
-        TABLE_NAME: TOD_DYNAMODB_TABLE_NAME,
-        TABLE_REGION: TOD_DYNAMODB_TABLE_REGION,
-      }
-    });
+    // const sampleFunctionJs = new lambda.Function(this, "Node23SampleFunctionJs", {
+    //   functionName: 'Node23SampleFunctionJs',
+    //   runtime: lambda.Runtime.PROVIDED_AL2023, // Provide any supported Node.js runtime
+    //   layers: [node23RuntimeLayer, nodeModulesLayer],
+    //   handler: "index.handler",
+    //   code: lambda.Code.fromAsset(path.join(__dirname, '../lambda_js')),
+    //   timeout: cdk.Duration.seconds(30),
+    //   environment: {
+    //     TABLE_NAME: TOD_DYNAMODB_TABLE_NAME,
+    //     TABLE_REGION: TOD_DYNAMODB_TABLE_REGION,
+    //   }
+    // });
     
-    sampleFunctionJs.addFunctionUrl({
-      authType: lambda.FunctionUrlAuthType.NONE,
+    // sampleFunctionJs.addFunctionUrl({
+    //   authType: lambda.FunctionUrlAuthType.NONE,
+    // });
+
+    const sampleBucket = new s3.Bucket(this, 'SampleBucket', {
+      bucketName: S3_BUCKET_NAME,
+      autoDeleteObjects: true,
+      removalPolicy: cdk.RemovalPolicy.DESTROY
     });
 
-    const todDynamoDbTable = TableV2.fromTableArn(this, 'todDynamoDbTable', TOD_DYNAMODB_TABLE_ARN);
-    todDynamoDbTable.grantReadData(sampleFunction);
-    todDynamoDbTable.grantReadData(sampleFunctionJs);
+    sampleBucket.grantRead(sampleFunction);
     
     // Define a CloudFormation output for your URL
     new cdk.CfnOutput(this, "sampleFunctionUrlOutput", {

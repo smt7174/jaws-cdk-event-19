@@ -1,11 +1,6 @@
 // typeを付けないとうまく動かない
 import type { LambdaFunctionURLEvent, LambdaFunctionURLResult } from 'aws-lambda/trigger/lambda-function-url'
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
-import { ScanCommand } from "@aws-sdk/lib-dynamodb";
-
-const TABLE_NAME_DEFAULT = 'tower-of-druaga'
-const TABLE_REGION_DEFAULT = 'ap-northeast-1'
+import { S3, GetObjectCommand } from '@aws-sdk/client-s3'
 
 export const handler = async function (event: LambdaFunctionURLEvent) {
   console.log(event);
@@ -15,17 +10,19 @@ export const handler = async function (event: LambdaFunctionURLEvent) {
   console.log(`NODE_PATH is ${process.env.NODE_PATH || 'undefined'}`);
   console.log(`LD_LIBRARY_PATH is ${process.env.LD_LIBRARY_PATH || 'undefined'}`);
   
-  const client = new DynamoDBClient({
-    region: process.env.TABLE_REGION || TABLE_REGION_DEFAULT,
+  const s3 = new S3({
+    region: process.env.DEPLOY_REGION,
   });
-  const docClient = DynamoDBDocumentClient.from(client);
   
-  const command = new ScanCommand({
-    TableName: process.env.TABLE_NAME || TABLE_NAME_DEFAULT,
+  const getObjectCommand = new GetObjectCommand({
+    Bucket: process.env.S3_BUCKET_NAME,
+    Key: process.env.S3_KEY_NAME,
   });
-
-  const output = await docClient.send(command);
+  
+  const response = await s3.send(getObjectCommand);
+  const output = await response.Body?.transformToString();
   // const output = '';
+  
   console.log(output);
   
   const result: LambdaFunctionURLResult = {

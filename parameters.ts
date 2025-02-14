@@ -1,4 +1,3 @@
 export const DEPLOY_REGION = 'us-east-1';
-export const TOD_DYNAMODB_TABLE_ARN = 'arn:aws:dynamodb:ap-northeast-1:659547760577:table/tower-of-druaga';
-export const TOD_DYNAMODB_TABLE_NAME = 'tower-of-druaga';
-export const TOD_DYNAMODB_TABLE_REGION = 'ap-northeast-1';
+export const S3_BUCKET_NAME = 'jp.belltreesoft.suzukima.jaws-cdk-event-19-sample';
+export const S3_KEY_NAME = 'aws-cdk-event-19-sample.txt';
