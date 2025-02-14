@@ -19,22 +19,22 @@ export class JawsCdkEvent19Stack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE,
     });
     
-    const nodeModulesLayer = new lambda.LayerVersion(this, 'NodeModulesLayer', {
-      code: lambda.Code.fromAsset(path.join(__dirname, '../node-modules-layer')),
-      layerVersionName: 'node-modules',
-      removalPolicy: cdk.RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE,
-      compatibleRuntimes: [
-        lambda.Runtime.PROVIDED_AL2023,
-        lambda.Runtime.NODEJS_22_X
-      ],
-    });
+    // const nodeModulesLayer = new lambda.LayerVersion(this, 'NodeModulesLayer', {
+    //   code: lambda.Code.fromAsset(path.join(__dirname, '../node-modules-layer')),
+    //   layerVersionName: 'node-modules',
+    //   removalPolicy: cdk.RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE,
+    //   compatibleRuntimes: [
+    //     lambda.Runtime.PROVIDED_AL2023,
+    //     lambda.Runtime.NODEJS_22_X
+    //   ],
+    // });
     
     // const nodeModulesLayerManual = lambda.LayerVersion.fromLayerVersionArn(this, 'NodeModulesLayerManual', "arn:aws:lambda:us-east-1:659547760577:layer:node-modules-manual:1");
     
     const sampleFunction = new lambda.Function(this, "Node23SampleFunction", {
       functionName: 'Node23SampleFunction',
       runtime: lambda.Runtime.PROVIDED_AL2023, // Provide any supported Node.js runtime
-      layers: [node23RuntimeLayer, nodeModulesLayer],
+      layers: [node23RuntimeLayer],
       handler: "index.handler",
       code: lambda.Code.fromAsset(path.join(__dirname, '../lambda')),
       timeout: cdk.Duration.seconds(30),
