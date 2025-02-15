@@ -19,15 +19,17 @@ export class JawsCdkEvent19Stack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE,
     });
     
-    // const nodeModulesLayer = new lambda.LayerVersion(this, 'NodeModulesLayer', {
-    //   code: lambda.Code.fromAsset(path.join(__dirname, '../node-modules-layer')),
-    //   layerVersionName: 'node-modules',
-    //   removalPolicy: cdk.RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE,
-    //   compatibleRuntimes: [
-    //     lambda.Runtime.PROVIDED_AL2023,
-    //     lambda.Runtime.NODEJS_22_X
-    //   ],
-    // });
+    // const node23RuntimeLayerManual = lambda.LayerVersion.fromLayerVersionArn(this, 'Node23SampleLayerManual', "arn:aws:lambda:us-east-1:659547760577:layer:runtime-node23-jawsug-cdk-event-19-nocdk:1");
+    
+    const nodeModulesLayer = new lambda.LayerVersion(this, 'NodeModulesLayer', {
+      code: lambda.Code.fromAsset(path.join(__dirname, '../node-modules-layer')),
+      layerVersionName: 'node-modules',
+      removalPolicy: cdk.RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE,
+      compatibleRuntimes: [
+        lambda.Runtime.NODEJS_22_X,
+        lambda.Runtime.PROVIDED_AL2023,
+      ],
+    });
     
     // const nodeModulesLayerManual = lambda.LayerVersion.fromLayerVersionArn(this, 'NodeModulesLayerManual', "arn:aws:lambda:us-east-1:659547760577:layer:node-modules-manual:1");
     
