@@ -1,9 +1,12 @@
 // 参考：https://github.com/lambci/node-custom-lambda/blob/master/v12.x/bootstrap.js
-const http = require('http')
+const http = require('http');
+const fs = require('fs');
 
 const RUNTIME_PATH = '/2018-06-01/runtime'
 const CALLBACK_USED = Symbol('CALLBACK_USED')
 const EXTENSION_TYPESCRIPT = '.ts'
+const EXTENSION_JAVASCRIPT = '.js'
+const EXTENSION_JAVASCRIPT_MODULE = '.mjs'
 
 const {
   AWS_LAMBDA_FUNCTION_NAME,
@@ -152,7 +155,16 @@ function getHandler() {
   // Let any errors here be thrown as-is to aid debugging
   // デフォルトは*.jsファイルを読み込むので、'ts'拡張子を設定しないと
   // Runtime.Unknownエラーになる。
-  const app = require(LAMBDA_TASK_ROOT + '/' + modulePath + EXTENSION_TYPESCRIPT)
+  let filePath = "";
+  if (isExistFile(LAMBDA_TASK_ROOT + '/' + modulePath + EXTENSION_TYPESCRIPT)) {
+    filePath = LAMBDA_TASK_ROOT + '/' + modulePath + EXTENSION_TYPESCRIPT;
+  } else if (isExistFile(LAMBDA_TASK_ROOT + '/' + modulePath + EXTENSION_JAVASCRIPT_MODULE)) {
+    filePath = LAMBDA_TASK_ROOT + '/' + modulePath + EXTENSION_JAVASCRIPT_MODULE;
+  } else {
+    filePath = LAMBDA_TASK_ROOT + '/' + modulePath + EXTENSION_JAVASCRIPT;
+  }
+
+  const app = require(filePath);
   // const app = require(LAMBDA_TASK_ROOT + '/' + modulePath)
 
   const userHandler = app[handlerName]
@@ -211,5 +223,18 @@ function toLambdaErr(err) {
     errorType: name || typeof err,
     errorMessage: message || ('' + err),
     stackTrace: (stack || '').split('\n').slice(1),
+  }
+}
+
+function isExistFile(filePath) {
+  try {
+    fs.statSync(filePath);
+    return true;
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      return false;
+    } else {
+      throw err;
+    }
   }
 }
