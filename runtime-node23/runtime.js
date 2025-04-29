@@ -1,4 +1,5 @@
 // 参考：https://github.com/lambci/node-custom-lambda/blob/master/v12.x/bootstrap.js
+//       https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/packaging-layers.html
 const http = require('http');
 const fs = require('fs');
 
@@ -17,8 +18,8 @@ const {
   LAMBDA_TASK_ROOT,
   _HANDLER,
   AWS_LAMBDA_RUNTIME_API,
-  PATH,
-  NODE_PATH
+  // PATH,
+  // NODE_PATH
 } = process.env
 
 const [HOST, PORT] = AWS_LAMBDA_RUNTIME_API.split(':')
@@ -27,8 +28,8 @@ start()
 
 async function start() {
   let handler
-  console.log(`runtime.js PATH env is ${PATH}`)
-  console.log(`runtime.js NODE_PATH env is ${NODE_PATH}`)
+  // console.log(`runtime.js PATH env is ${PATH}`)
+  // console.log(`runtime.js NODE_PATH env is ${NODE_PATH}`)
   try {
     handler = getHandler()
   } catch (e) {

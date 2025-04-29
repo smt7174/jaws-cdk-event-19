@@ -44,7 +44,7 @@
     "noEmit": true,
     "allowImportingTsExtensions": true,
     // cdk deployでrewriteRelativeImportExtensionsがあるとエラーになる
-    // "rewriteRelativeImportExtensions": true,
+    // "rewriteRelativeImportExtensions": true, 
     // "verbatimModuleSyntax": true
   },
   "exclude": [

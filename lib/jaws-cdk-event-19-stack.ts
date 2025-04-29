@@ -26,9 +26,12 @@ export class JawsCdkEvent19Stack extends cdk.Stack {
       layerVersionName: 'node-modules',
       removalPolicy: cdk.RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE,
       compatibleRuntimes: [
-        lambda.Runtime.NODEJS_22_X,
+        // lambda.Runtime.NODEJS_22_X,
         lambda.Runtime.PROVIDED_AL2023,
       ],
+      compatibleArchitectures: [
+        lambda.Architecture.X86_64,
+      ]
     });
     
     // const nodeModulesLayerManual = lambda.LayerVersion.fromLayerVersionArn(this, 'NodeModulesLayerManual', "arn:aws:lambda:us-east-1:659547760577:layer:node-modules-manual:1");
@@ -36,7 +39,7 @@ export class JawsCdkEvent19Stack extends cdk.Stack {
     const sampleFunction = new lambda.Function(this, "Node23SampleFunction", {
       functionName: 'Node23SampleFunction',
       runtime: lambda.Runtime.PROVIDED_AL2023, // Provide any supported Node.js runtime
-      layers: [node23RuntimeLayer],
+      layers: [node23RuntimeLayer, nodeModulesLayer],
       handler: "index.handler",
       code: lambda.Code.fromAsset(path.join(__dirname, '../lambda')),
       timeout: cdk.Duration.seconds(30),
