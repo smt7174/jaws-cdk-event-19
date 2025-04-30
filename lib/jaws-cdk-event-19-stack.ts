@@ -39,6 +39,7 @@ export class JawsCdkEvent19Stack extends cdk.Stack {
     const sampleFunction = new lambda.Function(this, "Node23SampleFunction", {
       functionName: 'Node23SampleFunction',
       runtime: lambda.Runtime.PROVIDED_AL2023, // Provide any supported Node.js runtime
+      architecture: lambda.Architecture.X86_64,
       layers: [node23RuntimeLayer, nodeModulesLayer],
       handler: "index.handler",
       code: lambda.Code.fromAsset(path.join(__dirname, '../lambda')),
