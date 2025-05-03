@@ -6,7 +6,7 @@ import { Workflow, Job } from "ghats";
 
 // workflow を定義
 const workflow = new Workflow("Hello", {
-  on: "push",
+  on: ["push", "branches", "develop"]
 });
 
 // job を定義
