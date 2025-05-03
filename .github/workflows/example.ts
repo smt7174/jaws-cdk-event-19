@@ -6,7 +6,11 @@ import { Workflow, Job } from "ghats";
 
 // workflow を定義
 const workflow = new Workflow("Hello", {
-  on: ["push", "branches", "develop"]
+  on: {
+    push: {
+      branches: ["develop"],
+    },
+  }
 });
 
 // job を定義
@@ -15,7 +19,7 @@ workflow.addJob(
     runsOn: "ubuntu-latest",
   })
     .uses("actions/checkout@v4", {
-      with: { "persist-credentials": "false" }
+      with: { "persist-credentials": "false"}
     })
     .run("echo 'Hello, world!'"),
 );
