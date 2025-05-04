@@ -8,7 +8,9 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "synth": "npx cdk synth",
+    "deploy": "npx cdk deploy --profile us-east-1"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

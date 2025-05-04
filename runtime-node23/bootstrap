@@ -7,7 +7,7 @@ echo "LAMBDA_TASK_ROOT is $LAMBDA_TASK_ROOT"
 
 # echo "PATH is $PATH"
 # export PATH=$PATH:/opt/nodejs/node_modules/:/opt/node_modules/
-# export NODE_PATH=/opt/nodejs/node22/node_modules/:/opt/nodejs/node_modules:/opt/node_modules:$LAMBDA_RUNTIME_DIR/node_modules:/opt/
+export NODE_PATH=/usr/local/bin:/usr/bin/:/bin:/opt/bin
 # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/nodejs/node_modules:/opt/node_modules
 
 echo "PATH is $PATH"
