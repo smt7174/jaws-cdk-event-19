@@ -7,7 +7,7 @@ echo "LAMBDA_TASK_ROOT is $LAMBDA_TASK_ROOT"
 
 # echo "PATH is $PATH"
 # export PATH=$PATH:/opt/nodejs/node_modules/:/opt/node_modules/
-export NODE_PATH=/usr/local/bin:/usr/bin/:/bin:/opt/bin
+export NODE_PATH=/opt/nodejs/node_modules:/opt/node_modules
 # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/nodejs/node_modules:/opt/node_modules
 
 echo "PATH is $PATH"
@@ -20,6 +20,8 @@ cd $LAMBDA_TASK_ROOT
 echo `ls -al /opt/`
 echo `ls -al /opt/bin/`
 echo `ls -al /opt/lib/`
+
+chmod -R 755 /opt/nodejs
 
 /opt/node-v23.6.0-linux-x64/bin/node /opt/runtime.js 
 
